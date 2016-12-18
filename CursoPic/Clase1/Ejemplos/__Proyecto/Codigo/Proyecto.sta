@@ -1,0 +1,43 @@
+
+ROM used: 284 (1%)
+          284 (1%) including unused fragments
+
+          1 Average locations per line
+          13 Average locations per statement
+
+RAM used: 25 (1%) at main() level
+          25 (1%) worst case
+
+Stack used: 1 worst case (out of 31 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   54    22 100  Proyecto.c
+  429     0   0  C:\Program Files (x86)\PICC\devices\18F4550.h
+----- -----
+  483    22 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     40   7   1             @delay_ms1
+0    240  42  20  1013  7.0  main
+
+Program metrics:
+    Functions               1
+    Statements              22
+    Comments                119
+    Volume (V)              1015
+    Difficilty (D)          6.9
+    Effort to implement (E) 7009
+    Time to implement (T)   6 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   4
+    Maintainability (MI)    38
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00002     4  0  
+00004-07FFE   280  32484  
+
+
+

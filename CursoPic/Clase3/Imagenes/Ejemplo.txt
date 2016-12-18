@@ -1,0 +1,21 @@
+Ejemplo1:
+Conectar un Pulsador en modo pulldown en el PIN_B0  
+y realizar una interrupcioon externa, la interupcion de nota en el LCD.
+
+Ejemplo2:
+Realizar un reloj digital utilizando los temporizadores y mostrar la hora
+minuto y segundo en el LCD
+
+Ejemplo3:
+Realizar un Medidor de distancia utilizando el sensor ultrasonico HC-sr04
+el pin de trigger va conectado al PIN_CO y el PIN DE ECHO se conecta
+al PIN_C1
+
+Ejemplo4:
+Controlar el giro en sentido horario y antihorario de un Servomotor, el pin 
+de control del servomotor va conectado al pin C7
+
+
+
+
+

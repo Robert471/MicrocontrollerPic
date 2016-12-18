@@ -1,0 +1,290 @@
+CCS PCM C Compiler, Version 4.057, 59222               10-Dic.-16 12:39
+
+               Filename: D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase3\Ejemplos\Ejemplo4\Codigo\main.lst
+
+               ROM used: 223 words (3%)
+                         Largest free fragment is 2048
+               RAM used: 20 (5%) at main() level
+                         26 (7%) worst case
+               Stack:    3 worst case (1 in main + 2 for interrupts)
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   0B4
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   0A,W
+0009:  MOVWF  20
+000A:  CLRF   0A
+000B:  MOVF   04,W
+000C:  MOVWF  22
+000D:  MOVF   77,W
+000E:  MOVWF  23
+000F:  MOVF   78,W
+0010:  MOVWF  24
+0011:  MOVF   79,W
+0012:  MOVWF  25
+0013:  MOVF   7A,W
+0014:  MOVWF  26
+0015:  MOVF   7B,W
+0016:  MOVWF  27
+0017:  BCF    03.7
+0018:  BCF    03.5
+0019:  MOVLW  8C
+001A:  MOVWF  04
+001B:  BTFSS  00.1
+001C:  GOTO   01F
+001D:  BTFSC  0C.1
+001E:  GOTO   032
+001F:  MOVF   22,W
+0020:  MOVWF  04
+0021:  MOVF   23,W
+0022:  MOVWF  77
+0023:  MOVF   24,W
+0024:  MOVWF  78
+0025:  MOVF   25,W
+0026:  MOVWF  79
+0027:  MOVF   26,W
+0028:  MOVWF  7A
+0029:  MOVF   27,W
+002A:  MOVWF  7B
+002B:  MOVF   20,W
+002C:  MOVWF  0A
+002D:  SWAPF  21,W
+002E:  MOVWF  03
+002F:  SWAPF  7F,F
+0030:  SWAPF  7F,W
+0031:  RETFIE
+0032:  BCF    0A.3
+0033:  BCF    0A.4
+0034:  GOTO   049
+.................... #include <16f877a.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #fuses   xt 
+.................... #use     delay(clock=4M) 
+*
+0035:  MOVLW  12
+0036:  SUBWF  30,F
+0037:  BTFSS  03.0
+0038:  GOTO   048
+0039:  MOVLW  30
+003A:  MOVWF  04
+003B:  BCF    03.7
+003C:  MOVLW  FC
+003D:  ANDWF  00,F
+003E:  BCF    03.0
+003F:  RRF    00,F
+0040:  RRF    00,F
+0041:  MOVF   00,W
+0042:  BTFSC  03.2
+0043:  GOTO   048
+0044:  GOTO   046
+0045:  NOP
+0046:  DECFSZ 00,F
+0047:  GOTO   045
+0048:  RETLW  00
+*
+009D:  MOVLW  2E
+009E:  MOVWF  04
+009F:  BCF    03.7
+00A0:  MOVF   00,W
+00A1:  BTFSC  03.2
+00A2:  GOTO   0B1
+00A3:  MOVLW  01
+00A4:  MOVWF  78
+00A5:  CLRF   77
+00A6:  DECFSZ 77,F
+00A7:  GOTO   0A6
+00A8:  DECFSZ 78,F
+00A9:  GOTO   0A5
+00AA:  MOVLW  4A
+00AB:  MOVWF  77
+00AC:  DECFSZ 77,F
+00AD:  GOTO   0AC
+00AE:  GOTO   0AF
+00AF:  DECFSZ 00,F
+00B0:  GOTO   0A3
+00B1:  BCF    0A.3
+00B2:  BCF    0A.4
+00B3:  GOTO   0D7 (RETURN)
+.................... #include "servomotor.c" 
+.................... #include "servomotor.h" 
+.................... #ifndef  __SERVOMOTOR__ 
+.................... #define  __SERVOMOTOR__ 
+....................  
+.................... /* 
+....................  * SERVOMOTOR: 
+....................  *    EL PERIODO DE LA SEÑAL ES DE 50Hz  
+....................  *       Motor en sentido horario (0,7 ms) 
+....................  *       Motor neutral (1,5 ms) 
+....................  *       Motor en sentido antihorario (1,8 ms) 
+....................  * 
+....................  *    USANDO TIMER2 
+....................  *       T=(4/FOSC)*PRESCALER*(VALOR CARGA PR2+1)*POSTSCALER 
+....................  *       1/50Hz = (4/4Mhz)*16*(VALOR CARGA PR2+1)*16 
+....................  *       PR2 = 77.125 
+....................  **/ 
+.................... #DEFINE  PR2         78 
+.................... #DEFINE  POSTSCALER  16 
+.................... #DEFINE  PRESCALER   T2_DIV_BY_16 
+.................... #DEFINE  PIN_CTRL    PIN_C0 
+....................  
+.................... #endif 
+....................  
+....................  
+.................... unsigned int16 i = 0; 
+*
+00BF:  BCF    03.5
+00C0:  CLRF   28
+00C1:  CLRF   29
+.................... unsigned int16 angle = 300; 
+00C2:  MOVLW  2C
+00C3:  MOVWF  2A
+00C4:  MOVLW  01
+00C5:  MOVWF  2B
+....................  
+.................... #INT_TIMER2 
+.................... void TMR2_isr( ){ 
+....................    // 300 - 2100 
+....................    output_high(PIN_CTRL); 
+*
+0049:  BCF    2C.0
+004A:  MOVF   2C,W
+004B:  BSF    03.5
+004C:  MOVWF  07
+004D:  BCF    03.5
+004E:  BSF    07.0
+*
+00C6:  MOVLW  FF
+00C7:  MOVWF  2C
+....................    angle  = 300 + i*100; 
+*
+004F:  MOVF   29,W
+0050:  MOVWF  30
+0051:  MOVF   28,W
+0052:  MOVWF  2F
+0053:  CLRF   32
+0054:  MOVLW  64
+0055:  MOVWF  31
+*
+006A:  MOVF   78,W
+006B:  ADDLW  2C
+006C:  MOVWF  2A
+006D:  MOVF   79,W
+006E:  MOVWF  2B
+006F:  MOVLW  01
+0070:  BTFSC  03.0
+0071:  MOVLW  02
+0072:  ADDWF  2B,F
+....................    delay_us( angle ); 
+0073:  MOVF   2B,W
+0074:  MOVWF  2F
+0075:  INCF   2F,F
+0076:  DECF   2F,F
+0077:  BTFSC  03.2
+0078:  GOTO   07D
+0079:  MOVLW  FF
+007A:  MOVWF  30
+007B:  CALL   035
+007C:  GOTO   076
+007D:  MOVF   2A,W
+007E:  MOVWF  30
+007F:  CALL   035
+....................    output_low(PIN_CTRL); 
+0080:  BCF    2C.0
+0081:  MOVF   2C,W
+0082:  BSF    03.5
+0083:  MOVWF  07
+0084:  BCF    03.5
+0085:  BCF    07.0
+.................... } 
+....................  
+0086:  BCF    0C.1
+0087:  BCF    0A.3
+0088:  BCF    0A.4
+0089:  GOTO   01F
+.................... void init_servomotor(){ 
+....................    set_tris_c(0b10000000); 
+008A:  MOVLW  80
+008B:  BSF    03.5
+008C:  MOVWF  07
+008D:  BCF    03.5
+008E:  MOVWF  2C
+....................    setup_timer_2( PRESCALER, PR2 , POSTSCALER ); 
+008F:  MOVLW  78
+0090:  MOVWF  78
+0091:  IORLW  06
+0092:  MOVWF  12
+0093:  MOVLW  4E
+0094:  BSF    03.5
+0095:  MOVWF  12
+....................    enable_interrupts( INT_TIMER2 );  
+0096:  BSF    0C.1
+....................    enable_interrupts(GLOBAL); 
+0097:  MOVLW  C0
+0098:  BCF    03.5
+0099:  IORWF  0B,F
+.................... } 
+009A:  BCF    0A.3
+009B:  BCF    0A.4
+009C:  GOTO   0C9 (RETURN)
+....................  
+....................  
+....................  
+.................... void main ( ){   
+*
+00B4:  CLRF   04
+00B5:  BCF    03.7
+00B6:  MOVLW  1F
+00B7:  ANDWF  03,F
+00B8:  BSF    03.5
+00B9:  BSF    1F.0
+00BA:  BSF    1F.1
+00BB:  BSF    1F.2
+00BC:  BCF    1F.3
+00BD:  MOVLW  07
+00BE:  MOVWF  1C
+....................    init_servomotor(); 
+*
+00C8:  GOTO   08A
+....................  
+....................    for(;;){ 
+....................       for(i=0;i<=17;i++){ 
+00C9:  CLRF   29
+00CA:  CLRF   28
+00CB:  MOVF   29,F
+00CC:  BTFSS  03.2
+00CD:  GOTO   0DD
+00CE:  MOVF   28,W
+00CF:  SUBLW  11
+00D0:  BTFSS  03.0
+00D1:  GOTO   0DD
+....................          delay_ms(500); 
+00D2:  MOVLW  02
+00D3:  MOVWF  2D
+00D4:  MOVLW  FA
+00D5:  MOVWF  2E
+00D6:  GOTO   09D
+00D7:  DECFSZ 2D,F
+00D8:  GOTO   0D4
+....................       } 
+00D9:  INCF   28,F
+00DA:  BTFSC  03.2
+00DB:  INCF   29,F
+00DC:  GOTO   0CB
+....................    } 
+00DD:  GOTO   0C9
+.................... } 
+....................  
+....................  
+00DE:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT NODEBUG NOPROTECT BROWNOUT NOLVP NOCPD NOWRT

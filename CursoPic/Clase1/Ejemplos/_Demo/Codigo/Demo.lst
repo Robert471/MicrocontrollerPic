@@ -1,0 +1,233 @@
+CCS PCH C Compiler, Version 4.057, 15433               08-Nov.-16 00:01
+
+               Filename: D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase1\Ejemplos\Demo\Codigo\Demo.lst
+
+               ROM used: 316 bytes (1%)
+                         Largest free fragment is 32452
+               RAM used: 26 (1%) at main() level
+                         26 (1%) worst case
+               Stack:    1 locations
+
+*
+0000:  GOTO   002A
+.................... #include <18F4550.h>    // PIC DE GAMA ALTA  
+.................... //////// Standard Header file for the PIC18F4550 device //////////////// 
+.................... #device PIC18F4550 
+.................... #list 
+....................  
+.................... #fuses   HS,CPUDIV1     // FUSES PARA EL PIC 
+.................... #use delay(clock=20Mhz) // FRECUENCIA DE TRABAJO PARA EL PIC 
+0004:  CLRF   FEA
+0006:  MOVLW  19
+0008:  MOVWF  FE9
+000A:  MOVF   FEF,W
+000C:  BZ    0028
+000E:  MOVLW  06
+0010:  MOVWF  01
+0012:  CLRF   00
+0014:  DECFSZ 00,F
+0016:  BRA    0014
+0018:  DECFSZ 01,F
+001A:  BRA    0012
+001C:  MOVLW  7B
+001E:  MOVWF  00
+0020:  DECFSZ 00,F
+0022:  BRA    0020
+0024:  DECFSZ FEF,F
+0026:  BRA    000E
+0028:  RETLW  00
+.................... #define CLOCK     PIN_B0 
+.................... #define DATA      PIN_B1 
+.................... #define MOSTRAR   PIN_B2 
+....................                          
+.................... void main(void){ 
+002A:  CLRF   FF8
+002C:  BCF    FD0.7
+002E:  CLRF   FEA
+0030:  CLRF   FE9
+0032:  MOVF   FC1,W
+0034:  ANDLW  C0
+0036:  IORLW  0F
+0038:  MOVWF  FC1
+003A:  MOVLW  07
+003C:  MOVWF  FB4
+....................    /* 
+....................       data    14:       envio datos de manera serial 
+....................       shift clock 11:   desplaza los datos 
+....................       latch clock 12:   escribe datos 
+....................    */ 
+....................  
+....................    int i=0,x=0,shift=0;   // variables de conteo 
+003E:  CLRF   06
+0040:  CLRF   07
+0042:  CLRF   08
+....................     
+....................    /* se le envia a las filas */ 
+....................    int datos[8]={ // defino datos a mostrar en la matriz de led 
+....................                 0b11111111,0b11111111,0b00110011,0b00110011, 
+....................                 0b01001111,0b10001111,0b11000111,0b00000000 
+....................                 }; 
+0044:  MOVLW  FF
+0046:  MOVWF  09
+0048:  MOVWF  0A
+004A:  MOVLW  33
+004C:  MOVWF  0B
+004E:  MOVWF  0C
+0050:  MOVLW  4F
+0052:  MOVWF  0D
+0054:  MOVLW  8F
+0056:  MOVWF  0E
+0058:  MOVLW  C7
+005A:  MOVWF  0F
+005C:  CLRF   10
+....................    /* se le envia a las columnas */              
+....................    int col[8]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80}; 
+005E:  MOVLW  01
+0060:  MOVWF  11
+0062:  MOVLW  02
+0064:  MOVWF  12
+0066:  MOVLW  04
+0068:  MOVWF  13
+006A:  MOVLW  08
+006C:  MOVWF  14
+006E:  MOVLW  10
+0070:  MOVWF  15
+0072:  MOVLW  20
+0074:  MOVWF  16
+0076:  MOVLW  40
+0078:  MOVWF  17
+007A:  MOVLW  80
+007C:  MOVWF  18
+....................    /* inicializado los puertos del PIC*/ 
+....................    set_tris_d(0); // CONFIGURO EL PUERTO D COMO SALIDA 
+007E:  MOVLW  00
+0080:  MOVWF  F95
+....................    output_d(0);   // LIMPIO EL PUERTOD 
+0082:  CLRF   F95
+0084:  CLRF   F8C
+....................    set_tris_b(0); // CONFIGURO EL PUERTO B COMO SALIDA 
+0086:  MOVWF  F93
+....................    output_b(0);   // LIMPIO EL PUERTOB 
+0088:  CLRF   F93
+008A:  CLRF   F8A
+....................     
+....................    for(;;){ 
+....................        
+....................       for(shift=0;shift<=8;shift++){ 
+008C:  CLRF   08
+008E:  MOVF   08,W
+0090:  SUBLW  08
+0092:  BNC   0138
+....................          for(x=0;x<8;x++){    // para enviar los datos definidos en el arreglo 
+0094:  CLRF   07
+0096:  MOVF   07,W
+0098:  SUBLW  07
+009A:  BNC   012E
+....................             output_d(col[x]<<shift); // HABILITA LAS COLUMNAS      
+009C:  CLRF   03
+009E:  MOVF   07,W
+00A0:  ADDLW  11
+00A2:  MOVWF  FE9
+00A4:  MOVLW  00
+00A6:  ADDWFC 03,W
+00A8:  MOVWF  FEA
+00AA:  MOVFF  FEF,1A
+00AE:  MOVF   08,W
+00B0:  MOVWF  01
+00B2:  BZ    00BC
+00B4:  BCF    FD8.0
+00B6:  RLCF   1A,F
+00B8:  DECFSZ 01,F
+00BA:  BRA    00B4
+00BC:  CLRF   F95
+00BE:  MOVFF  1A,F8C
+....................             for(i=0;i<8;i++){ 
+00C2:  CLRF   06
+00C4:  MOVF   06,W
+00C6:  SUBLW  07
+00C8:  BNC   011C
+....................                if(bit_test(~datos[x],7-i)==1){ 
+00CA:  CLRF   03
+00CC:  MOVF   07,W
+00CE:  ADDLW  09
+00D0:  MOVWF  FE9
+00D2:  MOVLW  00
+00D4:  ADDWFC 03,W
+00D6:  MOVWF  FEA
+00D8:  MOVF   FEF,W
+00DA:  XORLW  FF
+00DC:  MOVWF  19
+00DE:  MOVLW  07
+00E0:  BSF    FD8.0
+00E2:  SUBFWB 06,W
+00E4:  MOVWF  1A
+00E6:  MOVFF  19,00
+00EA:  MOVF   1A,W
+00EC:  MOVWF  01
+00EE:  BZ    00F8
+00F0:  BCF    FD8.0
+00F2:  RRCF   00,F
+00F4:  DECFSZ 01,F
+00F6:  BRA    00F0
+00F8:  BTFSS  00.0
+00FA:  BRA    0102
+....................                   output_high(DATA);   // 
+00FC:  BCF    F93.1
+00FE:  BSF    F8A.1
+....................                }else{ 
+0100:  BRA    0106
+....................                   output_low(DATA); 
+0102:  BCF    F93.1
+0104:  BCF    F8A.1
+....................                } 
+....................                /* GRABAR EL BIT ENVIADO EN EL REGISTRO*/ 
+....................                output_high(CLOCK); 
+0106:  BCF    F93.0
+0108:  BSF    F8A.0
+....................                delay_us(10); 
+010A:  MOVLW  10
+010C:  MOVWF  00
+010E:  DECFSZ 00,F
+0110:  BRA    010E
+0112:  NOP   
+....................                output_low(CLOCK);       
+0114:  BCF    F93.0
+0116:  BCF    F8A.0
+....................             } 
+0118:  INCF   06,F
+011A:  BRA    00C4
+....................             output_high(MOSTRAR); 
+011C:  BCF    F93.2
+011E:  BSF    F8A.2
+....................             delay_ms(5); 
+0120:  MOVLW  05
+0122:  MOVWF  19
+0124:  RCALL  0004
+....................             output_low(MOSTRAR); 
+0126:  BCF    F93.2
+0128:  BCF    F8A.2
+....................          } 
+012A:  INCF   07,F
+012C:  BRA    0096
+....................          delay_ms(100); //  retardo para el desplazado de la letras 
+012E:  MOVLW  64
+0130:  MOVWF  19
+0132:  RCALL  0004
+....................       } 
+0134:  INCF   08,F
+0136:  BRA    008E
+....................    }   
+0138:  BRA    008C
+.................... } 
+....................  
+....................  
+013A:  SLEEP 
+
+Configuration Fuses:
+   Word  1: 0C20   NOIESO NOFCMEN HS PLL1 CPUDIV1 USBDIV
+   Word  2: 1E1E   BROWNOUT NOWDT BORV20 PUT WDT32768 NOVREGEN RESERVED
+   Word  3: 8300   PBADEN CCP2C1 MCLR NOLPT1OSC RESERVED
+   Word  4: 0081   STVREN NODEBUG NOLVP NOXINST NOICPRT RESERVED
+   Word  5: C00F   NOPROTECT NOCPD NOCPB
+   Word  6: E00F   NOWRT NOWRTD NOWRTC NOWRTB
+   Word  7: 400F   NOEBTR NOEBTRB

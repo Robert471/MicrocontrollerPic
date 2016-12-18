@@ -1,0 +1,34 @@
+/* CONFIGURACION PARA PROGRAMAR EL MICROCONTROLADOR*/
+
+#include <16f877a.h>    // con esto declaro la configuracion
+                        // interna del pic16f877a
+#use delay(clock=4Mhz)  // frecuencia del MCU
+/****************************************************/
+
+void main(void){        // funcion principal en lenguajeC
+
+   set_tris_b(0x00);    // puertoB como salida
+   output_b(0);         // inicio el puerto a un valor 0
+    
+   while(1){
+      output_high(PIN_B1); // led on
+      delay_ms(500);       // retardo 500ms
+      output_low(PIN_B1);  // led off
+      delay_ms(500);       // retardo 500ms
+      output_high(PIN_B2); // led on
+      delay_ms(500);       // retardo 500ms
+      output_low(PIN_B2);  // led off
+      delay_ms(500);       // retardo 500ms
+      output_high(PIN_B0); // led on
+      delay_ms(500);       // retardo 500ms
+      output_low(PIN_B0);  // led off
+      delay_ms(500);       // retardo 500ms
+   }
+}
+
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+[PROJECT]
+Target=ejemplo1.HEX
+Development_Mode=2
+Processor=0x877A
+Processor_Text=PIC16F877A
+ToolSuite=CCS
+
+[Directories]
+Include=
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=C:\Documents and Settings\PC21\Escritorio\CLASE1\ejemplo1.c
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+
+[ejemplo1.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=ejemplo1.c
+
+[Windows]
+0=0000 ejemplo1.c 0 0 796 451 3 0
+
+[Opened Files]
+1=D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase1\Ejemplos\Ejemplo1\ejemplo1.c
+2=
+[Units]
+Count=1
+1=ejemplo1 (main)

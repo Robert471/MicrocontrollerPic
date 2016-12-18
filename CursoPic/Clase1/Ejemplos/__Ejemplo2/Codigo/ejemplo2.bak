@@ -1,0 +1,49 @@
+#include<16f877a.h> // con esto declaro la configuracion
+                   // interna del pic16f877a
+#use delay(clock=4Mhz) // frecuencia del MCU
+/****************************************************/
+/*
+   VALORES PARA EL DISPLAY DE 7 SEGMENTOS
+   BINARIO                       HEXADECIMAL
+PB7 PB6 PB5 PB4 PB3 PB2 PB1 PB0
+X   g   f   e   d   c   b   a 
+0   0   1   1   1   1   1   1      0x3F      0
+0   0   0   0   0   1   1   0      0x06      1
+0   1   0   1   1   0   1   1      0x5B      2
+0   1   0   0   1   1   1   1      0x4F      3
+0   1   1   0   0   1   1   0      0x66      4
+0   1   1   0   1   1   0   1      0x6D      5   
+0   1   1   1   1   1   0   1      0x7D      6
+0   1   0   0   0   1   1   1      0x47      7
+0   1   1   1   1   1   1   1      0x7F      8
+0   1   1   0   0   1   1   1      0x67      9
+*/
+
+void main(void){ // funcion principal en lenguajeC
+
+   int valores[10]={0x03F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x47,0x7F,0x67};   // ARRAY DE DATOS
+   int i=0;          // variable de conteo
+   set_tris_b(0x00); // puertoB como salida el puertoB
+   set_tris_d(0xFF); // configura como entrada el puertoD
+   output_b(0);      // inicio el puerto a un valor 0
+    
+   while(1){
+      /*
+         input(nombre_del_pin) -> para leer entradas
+         output_nombredelpuerto(valor) -> para salidas
+      */
+      if(input(PIN_D0)==1){      // SI PRESIONO EL BOTON
+         output_b(valores[1]);   // envio el numero 1 al display
+      }else{
+         output_b(valores[0]);   // envio el numero 0 al display
+      }
+   }
+}
+
+
+
+
+
+
+
+

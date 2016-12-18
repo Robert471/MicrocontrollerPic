@@ -1,0 +1,456 @@
+CCS PCM C Compiler, Version 4.114, 93513558               17-Dic.-16 01:30
+
+               Filename: D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase5\Ejemplos\Ejemplo3\Codigo\Ejemplo3.lst
+
+               ROM used: 475 words (6%)
+                         Largest free fragment is 2048
+               RAM used: 15 (4%) at main() level
+                         17 (5%) worst case
+               Stack:    2 worst case (1 in main + 1 for interrupts)
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   0B0
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   0A,W
+0009:  MOVWF  20
+000A:  CLRF   0A
+000B:  MOVF   04,W
+000C:  MOVWF  22
+000D:  MOVF   77,W
+000E:  MOVWF  23
+000F:  MOVF   78,W
+0010:  MOVWF  24
+0011:  MOVF   79,W
+0012:  MOVWF  25
+0013:  MOVF   7A,W
+0014:  MOVWF  26
+0015:  BCF    03.7
+0016:  BCF    03.5
+0017:  MOVLW  8C
+0018:  MOVWF  04
+0019:  BTFSS  00.5
+001A:  GOTO   01D
+001B:  BTFSC  0C.5
+001C:  GOTO   02E
+001D:  MOVF   22,W
+001E:  MOVWF  04
+001F:  MOVF   23,W
+0020:  MOVWF  77
+0021:  MOVF   24,W
+0022:  MOVWF  78
+0023:  MOVF   25,W
+0024:  MOVWF  79
+0025:  MOVF   26,W
+0026:  MOVWF  7A
+0027:  MOVF   20,W
+0028:  MOVWF  0A
+0029:  SWAPF  21,W
+002A:  MOVWF  03
+002B:  SWAPF  7F,F
+002C:  SWAPF  7F,W
+002D:  RETFIE
+002E:  BCF    0A.3
+002F:  BCF    0A.4
+0030:  GOTO   031
+.................... #include <16f877a.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #fuses   XT 
+.................... #use     delay(clock=4M) 
+009B:  MOVLW  2A
+009C:  MOVWF  04
+009D:  BCF    03.7
+009E:  MOVF   00,W
+009F:  BTFSC  03.2
+00A0:  GOTO   0AF
+00A1:  MOVLW  01
+00A2:  MOVWF  78
+00A3:  CLRF   77
+00A4:  DECFSZ 77,F
+00A5:  GOTO   0A4
+00A6:  DECFSZ 78,F
+00A7:  GOTO   0A3
+00A8:  MOVLW  4A
+00A9:  MOVWF  77
+00AA:  DECFSZ 77,F
+00AB:  GOTO   0AA
+00AC:  GOTO   0AD
+00AD:  DECFSZ 00,F
+00AE:  GOTO   0A1
+00AF:  RETURN
+.................... #use     rs232(BAUD = 9600,XMIT = PIN_C6, RCV = PIN_C7)    
+.................... #define  MOTOR1A  PIN_C0 
+.................... #define  MOTOR1B  PIN_C1 
+.................... #define  MOTOR2A  PIN_C2 
+.................... #define  MOTOR2B  PIN_C3 
+....................  
+.................... char data; 
+.................... #INT_RDA 
+.................... void RDA_isr(){ 
+....................    data = getc();       
+*
+0031:  BTFSS  0C.5
+0032:  GOTO   031
+0033:  MOVF   1A,W
+0034:  MOVWF  27
+.................... } 
+....................  
+0035:  BCF    0C.5
+0036:  BCF    0A.3
+0037:  BCF    0A.4
+0038:  GOTO   01D
+.................... void main(){ 
+*
+0052:  DATA 00,00
+*
+00B0:  CLRF   04
+00B1:  BCF    03.7
+00B2:  MOVLW  1F
+00B3:  ANDWF  03,F
+00B4:  MOVLW  19
+00B5:  BSF    03.5
+00B6:  MOVWF  19
+00B7:  MOVLW  A6
+00B8:  MOVWF  18
+00B9:  MOVLW  90
+00BA:  BCF    03.5
+00BB:  MOVWF  18
+00BC:  MOVLW  FF
+00BD:  MOVWF  28
+00BE:  BSF    03.5
+00BF:  BSF    1F.0
+00C0:  BSF    1F.1
+00C1:  BSF    1F.2
+00C2:  BCF    1F.3
+00C3:  MOVLW  07
+00C4:  MOVWF  1C
+....................  
+....................    set_tris_c(0b1000000); 
+00C5:  MOVLW  40
+00C6:  MOVWF  07
+00C7:  BCF    03.5
+00C8:  MOVWF  28
+....................    enable_interrupts(INT_RDA); 
+00C9:  BSF    03.5
+00CA:  BSF    0C.5
+....................    enable_interrupts(GLOBAL); 
+00CB:  MOVLW  C0
+00CC:  BCF    03.5
+00CD:  IORWF  0B,F
+....................     
+....................    output_low(MOTOR1A); output_low(MOTOR1B); 
+00CE:  BCF    28.0
+00CF:  MOVF   28,W
+00D0:  BSF    03.5
+00D1:  MOVWF  07
+00D2:  BCF    03.5
+00D3:  BCF    07.0
+00D4:  BCF    28.1
+00D5:  MOVF   28,W
+00D6:  BSF    03.5
+00D7:  MOVWF  07
+00D8:  BCF    03.5
+00D9:  BCF    07.1
+....................    output_low(MOTOR2A); output_low(MOTOR2B); 
+00DA:  BCF    28.2
+00DB:  MOVF   28,W
+00DC:  BSF    03.5
+00DD:  MOVWF  07
+00DE:  BCF    03.5
+00DF:  BCF    07.2
+00E0:  BCF    28.3
+00E1:  MOVF   28,W
+00E2:  BSF    03.5
+00E3:  MOVWF  07
+00E4:  BCF    03.5
+00E5:  BCF    07.3
+....................  
+....................    for(;;){ 
+....................       if ( data == 'A'){   printf("Adelante\r\n"); 
+00E6:  MOVF   27,W
+00E7:  SUBLW  41
+00E8:  BTFSS  03.2
+00E9:  GOTO   110
+00EA:  MOVLW  39
+00EB:  BSF    03.6
+00EC:  MOVWF  0D
+00ED:  MOVLW  00
+00EE:  MOVWF  0F
+00EF:  BCF    03.6
+00F0:  CALL   053
+....................          output_high(MOTOR1A); output_low(MOTOR1B); 
+00F1:  BCF    28.0
+00F2:  MOVF   28,W
+00F3:  BSF    03.5
+00F4:  MOVWF  07
+00F5:  BCF    03.5
+00F6:  BSF    07.0
+00F7:  BCF    28.1
+00F8:  MOVF   28,W
+00F9:  BSF    03.5
+00FA:  MOVWF  07
+00FB:  BCF    03.5
+00FC:  BCF    07.1
+....................          output_high(MOTOR2A); output_low(MOTOR2B); 
+00FD:  BCF    28.2
+00FE:  MOVF   28,W
+00FF:  BSF    03.5
+0100:  MOVWF  07
+0101:  BCF    03.5
+0102:  BSF    07.2
+0103:  BCF    28.3
+0104:  MOVF   28,W
+0105:  BSF    03.5
+0106:  MOVWF  07
+0107:  BCF    03.5
+0108:  BCF    07.3
+....................          delay_ms(300); 
+0109:  MOVLW  02
+010A:  MOVWF  29
+010B:  MOVLW  96
+010C:  MOVWF  2A
+010D:  CALL   09B
+010E:  DECFSZ 29,F
+010F:  GOTO   10B
+....................       } 
+....................       if ( data == 'B'){   printf("ATRAS\r\n"); 
+0110:  MOVF   27,W
+0111:  SUBLW  42
+0112:  BTFSS  03.2
+0113:  GOTO   13A
+0114:  MOVLW  3F
+0115:  BSF    03.6
+0116:  MOVWF  0D
+0117:  MOVLW  00
+0118:  MOVWF  0F
+0119:  BCF    03.6
+011A:  CALL   053
+....................          output_low(MOTOR1A); output_high(MOTOR1B); 
+011B:  BCF    28.0
+011C:  MOVF   28,W
+011D:  BSF    03.5
+011E:  MOVWF  07
+011F:  BCF    03.5
+0120:  BCF    07.0
+0121:  BCF    28.1
+0122:  MOVF   28,W
+0123:  BSF    03.5
+0124:  MOVWF  07
+0125:  BCF    03.5
+0126:  BSF    07.1
+....................          output_low(MOTOR2A); output_high(MOTOR2B); 
+0127:  BCF    28.2
+0128:  MOVF   28,W
+0129:  BSF    03.5
+012A:  MOVWF  07
+012B:  BCF    03.5
+012C:  BCF    07.2
+012D:  BCF    28.3
+012E:  MOVF   28,W
+012F:  BSF    03.5
+0130:  MOVWF  07
+0131:  BCF    03.5
+0132:  BSF    07.3
+....................          delay_ms(300); 
+0133:  MOVLW  02
+0134:  MOVWF  29
+0135:  MOVLW  96
+0136:  MOVWF  2A
+0137:  CALL   09B
+0138:  DECFSZ 29,F
+0139:  GOTO   135
+....................       } 
+....................       if ( data == 'c'){   printf("DERECHA\r\n"); 
+013A:  MOVF   27,W
+013B:  SUBLW  63
+013C:  BTFSS  03.2
+013D:  GOTO   178
+013E:  MOVLW  43
+013F:  BSF    03.6
+0140:  MOVWF  0D
+0141:  MOVLW  00
+0142:  MOVWF  0F
+0143:  BCF    03.6
+0144:  CALL   053
+....................          output_low(MOTOR1A); output_low(MOTOR1B); 
+0145:  BCF    28.0
+0146:  MOVF   28,W
+0147:  BSF    03.5
+0148:  MOVWF  07
+0149:  BCF    03.5
+014A:  BCF    07.0
+014B:  BCF    28.1
+014C:  MOVF   28,W
+014D:  BSF    03.5
+014E:  MOVWF  07
+014F:  BCF    03.5
+0150:  BCF    07.1
+....................          output_high(MOTOR2A); output_low(MOTOR2B); 
+0151:  BCF    28.2
+0152:  MOVF   28,W
+0153:  BSF    03.5
+0154:  MOVWF  07
+0155:  BCF    03.5
+0156:  BSF    07.2
+0157:  BCF    28.3
+0158:  MOVF   28,W
+0159:  BSF    03.5
+015A:  MOVWF  07
+015B:  BCF    03.5
+015C:  BCF    07.3
+....................          delay_ms(100); 
+015D:  MOVLW  64
+015E:  MOVWF  2A
+015F:  CALL   09B
+....................          output_high(MOTOR1A); output_low(MOTOR1B); 
+0160:  BCF    28.0
+0161:  MOVF   28,W
+0162:  BSF    03.5
+0163:  MOVWF  07
+0164:  BCF    03.5
+0165:  BSF    07.0
+0166:  BCF    28.1
+0167:  MOVF   28,W
+0168:  BSF    03.5
+0169:  MOVWF  07
+016A:  BCF    03.5
+016B:  BCF    07.1
+....................          output_high(MOTOR2A); output_low(MOTOR2B); 
+016C:  BCF    28.2
+016D:  MOVF   28,W
+016E:  BSF    03.5
+016F:  MOVWF  07
+0170:  BCF    03.5
+0171:  BSF    07.2
+0172:  BCF    28.3
+0173:  MOVF   28,W
+0174:  BSF    03.5
+0175:  MOVWF  07
+0176:  BCF    03.5
+0177:  BCF    07.3
+....................       } 
+....................       if ( data == 'D'){   printf("IZQUIERDA\r\n"); 
+0178:  MOVF   27,W
+0179:  SUBLW  44
+017A:  BTFSS  03.2
+017B:  GOTO   1B6
+017C:  MOVLW  48
+017D:  BSF    03.6
+017E:  MOVWF  0D
+017F:  MOVLW  00
+0180:  MOVWF  0F
+0181:  BCF    03.6
+0182:  CALL   053
+....................          output_high(MOTOR1A); output_low(MOTOR1B); 
+0183:  BCF    28.0
+0184:  MOVF   28,W
+0185:  BSF    03.5
+0186:  MOVWF  07
+0187:  BCF    03.5
+0188:  BSF    07.0
+0189:  BCF    28.1
+018A:  MOVF   28,W
+018B:  BSF    03.5
+018C:  MOVWF  07
+018D:  BCF    03.5
+018E:  BCF    07.1
+....................          output_low(MOTOR2A); output_low(MOTOR2B); 
+018F:  BCF    28.2
+0190:  MOVF   28,W
+0191:  BSF    03.5
+0192:  MOVWF  07
+0193:  BCF    03.5
+0194:  BCF    07.2
+0195:  BCF    28.3
+0196:  MOVF   28,W
+0197:  BSF    03.5
+0198:  MOVWF  07
+0199:  BCF    03.5
+019A:  BCF    07.3
+....................          delay_ms(100); 
+019B:  MOVLW  64
+019C:  MOVWF  2A
+019D:  CALL   09B
+....................          output_high(MOTOR1A); output_low(MOTOR1B); 
+019E:  BCF    28.0
+019F:  MOVF   28,W
+01A0:  BSF    03.5
+01A1:  MOVWF  07
+01A2:  BCF    03.5
+01A3:  BSF    07.0
+01A4:  BCF    28.1
+01A5:  MOVF   28,W
+01A6:  BSF    03.5
+01A7:  MOVWF  07
+01A8:  BCF    03.5
+01A9:  BCF    07.1
+....................          output_high(MOTOR2A); output_low(MOTOR2B); 
+01AA:  BCF    28.2
+01AB:  MOVF   28,W
+01AC:  BSF    03.5
+01AD:  MOVWF  07
+01AE:  BCF    03.5
+01AF:  BSF    07.2
+01B0:  BCF    28.3
+01B1:  MOVF   28,W
+01B2:  BSF    03.5
+01B3:  MOVWF  07
+01B4:  BCF    03.5
+01B5:  BCF    07.3
+....................       }     
+....................       if ( data == 'E'){  printf("APAGAR\r\n"); 
+01B6:  MOVF   27,W
+01B7:  SUBLW  45
+01B8:  BTFSS  03.2
+01B9:  GOTO   1D9
+01BA:  MOVLW  4E
+01BB:  BSF    03.6
+01BC:  MOVWF  0D
+01BD:  MOVLW  00
+01BE:  MOVWF  0F
+01BF:  BCF    03.6
+01C0:  CALL   053
+....................          output_low(MOTOR1A); output_low(MOTOR1B); 
+01C1:  BCF    28.0
+01C2:  MOVF   28,W
+01C3:  BSF    03.5
+01C4:  MOVWF  07
+01C5:  BCF    03.5
+01C6:  BCF    07.0
+01C7:  BCF    28.1
+01C8:  MOVF   28,W
+01C9:  BSF    03.5
+01CA:  MOVWF  07
+01CB:  BCF    03.5
+01CC:  BCF    07.1
+....................          output_low(MOTOR2A); output_low(MOTOR2B); 
+01CD:  BCF    28.2
+01CE:  MOVF   28,W
+01CF:  BSF    03.5
+01D0:  MOVWF  07
+01D1:  BCF    03.5
+01D2:  BCF    07.2
+01D3:  BCF    28.3
+01D4:  MOVF   28,W
+01D5:  BSF    03.5
+01D6:  MOVWF  07
+01D7:  BCF    03.5
+01D8:  BCF    07.3
+....................       } 
+....................    } 
+01D9:  GOTO   0E6
+.................... } 
+....................  
+....................  
+01DA:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT BROWNOUT NOLVP NOCPD NOWRT NODEBUG NOPROTECT

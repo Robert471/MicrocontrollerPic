@@ -1,0 +1,18 @@
+ÀÄmain
+   ÀÄMAIN  0/103  Ram=8
+      ÃÄ??0??
+      ÃÄinit_ultrasonico  0/16  Ram=0
+      ÃÄread_time_ultrasonico  0/73  Ram=2
+      ÃÄcalcular_distancia  0/91  Ram=10
+      ³  ÃÄ@ITOF  (Inline)  Ram=2
+      ³  ÃÄ@MULFF  0/117  Ram=13
+      ³  ÀÄ@MULFF  0/117  Ram=13
+      ÃÄ@const68  0/34  Ram=0
+      ÃÄ@PRINTF_LU_9600_62_63  0/91  Ram=9
+      ÃÄ@const68  0/34  Ram=0
+      ÃÄ@PRINTF_L32D_9600_62_63FPFPF  0/237  Ram=13
+      ³  ÃÄ@MULFF  0/117  Ram=13
+      ³  ÃÄ@FTOSD  (Inline)  Ram=5
+      ³  ÃÄ@DIV3232  0/66  Ram=13
+      ³  ÀÄ@DIV3232  0/66  Ram=13
+      ÀÄ@delay_ms1  0/23  Ram=1

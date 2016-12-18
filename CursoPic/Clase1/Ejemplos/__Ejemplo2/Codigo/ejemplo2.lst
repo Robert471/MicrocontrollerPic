@@ -1,0 +1,75 @@
+CCS PCM C Compiler, Version 4.057, 15433               07-Nov.-16 23:35
+
+               Filename: D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase1\Ejemplos\Ejemplo2\ejemplo2.lst
+
+               ROM used: 33 words (0%)
+                         Largest free fragment is 2048
+               RAM used: 7 (2%) at main() level
+                         7 (2%) worst case
+               Stack:    0 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   004
+0003:  NOP
+.................... #include <16f877a.h>  
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #fuses XT 
+.................... #use delay(clock=4Mhz)  
+....................  
+.................... void main(void){ 
+0004:  CLRF   04
+0005:  BCF    03.7
+0006:  MOVLW  1F
+0007:  ANDWF  03,F
+0008:  BSF    03.5
+0009:  BSF    1F.0
+000A:  BSF    1F.1
+000B:  BSF    1F.2
+000C:  BCF    1F.3
+000D:  MOVLW  07
+000E:  MOVWF  1C
+....................  
+....................    set_tris_b(0b00000001);  
+000F:  MOVLW  01
+0010:  MOVWF  06
+....................  
+....................    for(;;){ 
+....................       if(input(PIN_B0)==1){       
+0011:  BSF    06.0
+0012:  BCF    03.5
+0013:  BTFSS  06.0
+0014:  GOTO   01A
+....................          output_high( PIN_B7 );    
+0015:  BSF    03.5
+0016:  BCF    06.7
+0017:  BCF    03.5
+0018:  BSF    06.7
+....................       }else{ 
+0019:  GOTO   01E
+....................          output_low( PIN_B7 );   
+001A:  BSF    03.5
+001B:  BCF    06.7
+001C:  BCF    03.5
+001D:  BCF    06.7
+....................       } 
+....................    } 
+001E:  BSF    03.5
+001F:  GOTO   011
+.................... } 
+....................  
+....................  
+....................  
+....................  
+....................  
+....................  
+....................  
+....................  
+0020:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT NODEBUG NOPROTECT BROWNOUT NOLVP NOCPD NOWRT

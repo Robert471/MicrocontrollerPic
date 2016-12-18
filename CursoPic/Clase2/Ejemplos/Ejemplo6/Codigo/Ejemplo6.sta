@@ -1,0 +1,58 @@
+
+ROM used: 1446 (18%)
+          1446 (18%) including unused fragments
+
+          1 Average locations per line
+          6 Average locations per statement
+
+RAM used: 15 (4%) at main() level
+          53 (14%) worst case
+
+Stack used: 4 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   23     7   3  Ejemplo6.c
+  313     0   0  C:\Program Files (x86)\PICC\devices\16f877a.h
+  351    74  30  C:\Program Files (x86)\PICC\drivers\HDM64GS12.c
+  556   167  67  C:\Program Files (x86)\PICC\drivers\graphics.c
+----- -----
+ 1243   248 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0    143  10   1   555  3.4  glcd_init
+0    118   8   9   764  7.1  glcd_pixel
+ Inline        4   498  4.8  glcd_fillScreen
+0     37   3   2             @MUL88
+0     42   3   2   257  2.8  glcd_writeByte
+0     46   3   2   318  2.8  glcd_readByte
+0    262  18   0             @const71
+0    224  15   0             @const74
+0    182  13  17  1475  8.8  glcd_line
+0     98   7   6  1036  5.8  glcd_rect
+0    216  15  23  1550 11.2  glcd_text57
+0     74   5   8   357  3.2  MAIN
+
+Program metrics:
+    Functions               9
+    Statements              248
+    Comments                420
+    Volume (V)              10078
+    Difficilty (D)          49.7
+    Effort to implement (E) 500901
+    Time to implement (T)   7 hours, 44 minutes
+    Est Delivered Bugs (B)  2
+    Cyclomatic Complexity   31
+    Maintainability (MI)    34
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-007FF  1442  602  
+00800-00FFF     0  2048  
+01000-017FF     0  2048  
+01800-01FFF     0  2048  
+
+
+

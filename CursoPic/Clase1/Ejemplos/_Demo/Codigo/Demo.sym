@@ -1,0 +1,61 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     @SCRATCH
+006     main.i
+007     main.x
+008     main.shift
+009-010 main.datos
+011-018 main.col
+019     @delay_ms1.P1
+019     main.@SCRATCH1
+01A     main.@SCRATCH2
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB-FBC CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1_LOW
+FBE-FBF CCP_1
+FBF     CCP_1_HIGH
+FE9-FEA @WRITE_PROGRAM_MEMORY.P1
+FE9-FEA @READ_PROGRAM_MEMORY.P2
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0004  @delay_ms1
+002A  main
+002A  @cinit
+
+Project Directory:
+    D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase1\Ejemplos\Demo\Codigo\
+
+Project Files:
+    Demo.c
+    C:\Program Files (x86)\PICC\devices\18F4550.h
+
+Units:
+    D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase1\Ejemplos\Demo\Codigo\Demo.c (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      Demo.err
+    Ext Symbols: Demo.esym
+    INHX32:      Demo.hex
+    Symbols:     Demo.sym
+    List:        Demo.lst
+    Debug/COFF:  Demo.cof
+    Project:     Demo.PJT
+    Call Tree:   Demo.tre
+    Statistics:  Demo.sta

@@ -1,0 +1,11 @@
+#ifndef  __ULTRASONICO__
+#define  __ULTRASONICO__
+
+#define  TRIG1 PIN_C1
+#define  ECHO1 PIN_C0
+
+void  init_ultrasonico();
+int16 read_ultrasonico();
+float calcular_distancia(unsigned int16 tiempo);
+
+#endif

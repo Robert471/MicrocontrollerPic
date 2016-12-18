@@ -1,0 +1,400 @@
+CCS PCM C Compiler, Version 4.057, 59222               10-Dic.-16 12:37
+
+               Filename: D:\LaboTEC\Cursos\Curso_PIC\Modulo_1\Clase3\Ejemplos\Ejemplo3\Codigo\main.lst
+
+               ROM used: 855 words (10%)
+                         Largest free fragment is 2048
+               RAM used: 15 (4%) at main() level
+                         41 (11%) worst case
+               Stack:    2 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   2F0
+0003:  NOP
+.................... #include <16f877a.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #fuses   xt 
+.................... #use     delay(clock=4M) 
+02D9:  MOVLW  28
+02DA:  MOVWF  04
+02DB:  BCF    03.7
+02DC:  MOVF   00,W
+02DD:  BTFSC  03.2
+02DE:  GOTO   2ED
+02DF:  MOVLW  01
+02E0:  MOVWF  78
+02E1:  CLRF   77
+02E2:  DECFSZ 77,F
+02E3:  GOTO   2E2
+02E4:  DECFSZ 78,F
+02E5:  GOTO   2E1
+02E6:  MOVLW  4A
+02E7:  MOVWF  77
+02E8:  DECFSZ 77,F
+02E9:  GOTO   2E8
+02EA:  GOTO   2EB
+02EB:  DECFSZ 00,F
+02EC:  GOTO   2DF
+02ED:  BCF    0A.3
+02EE:  BCF    0A.4
+02EF:  GOTO   353 (RETURN)
+.................... #use rs232(BAUD=9600,XMIT=PIN_C6,RCV=PIN_C7) 
+.................... #include "ultrasonico.c" 
+.................... #include "ultrasonico.h" 
+.................... #ifndef  __ULTRASONICO__ 
+.................... #define  __ULTRASONICO__ 
+....................  
+.................... /* 
+....................  * LA DISTANCIA SE CALCULA POR LA SIGUIENTE FORMULA 
+....................  *    2*DISTANCIA = ESPACIO*TIEMPO 
+....................  *    2*DISTANCIA = (340m/s)*TIEMPO 
+....................  *    DISTANCIA = 170m/s * TIEMPO 
+....................  * 
+....................  * EL TIEMPO SE CALCULA CON TIMER1 
+....................  *    TIEMPO = 4*TOSC *VALORTIMER1*PRESCALER 
+....................  *    TIEMPO = (4/4MHZ)*VALORTIMER1*8    
+....................  *    TIEMPO = (8us)*(VALORTIMER1) 
+....................  * 
+....................  *    ENTONCES LA ECUACION QUEDA: 
+....................  *     
+....................  *    DISTANCIA = (170m/s)*(8us)*(VALORTIMER1) 
+....................  *    DISTANCIA = (170m/s)*(8us)*(VALORTIMER1) 
+....................  *    DISTANCIA = (0.136)*(VALORTIMER1) cm 
+....................  * 
+....................  **/ 
+.................... #define  TRIG1 PIN_C1 
+.................... #define  ECHO1 PIN_C0 
+....................  
+.................... void  init_ultrasonico(); 
+.................... int16 read_ultrasonico(); 
+.................... float calcular_distancia(unsigned int16 tiempo); 
+....................  
+.................... #endif 
+....................  
+....................  
+.................... void init_ultrasonico(){ 
+....................  
+....................    set_tris_c(0b00000001); 
+*
+0026:  MOVLW  01
+0027:  BSF    03.5
+0028:  MOVWF  07
+0029:  BCF    03.5
+002A:  MOVWF  20
+*
+0303:  MOVLW  FF
+0304:  BCF    03.5
+0305:  MOVWF  20
+....................  
+....................    output_low(TRIG1); 
+*
+002B:  BCF    20.1
+002C:  MOVF   20,W
+002D:  BSF    03.5
+002E:  MOVWF  07
+002F:  BCF    03.5
+0030:  BCF    07.1
+....................     
+....................    setup_timer_1(T1_INTERNAL|T1_DIV_BY_8);    
+0031:  MOVLW  B5
+0032:  MOVWF  10
+.................... } 
+0033:  BCF    0A.3
+0034:  BCF    0A.4
+0035:  GOTO   309 (RETURN)
+....................  
+.................... unsigned int16 read_time_ultrasonico(){ 
+....................    unsigned int16 time; 
+....................    output_high(TRIG1);                   
+0036:  BCF    20.1
+0037:  MOVF   20,W
+0038:  BSF    03.5
+0039:  MOVWF  07
+003A:  BCF    03.5
+003B:  BSF    07.1
+....................    delay_us(20);                       
+003C:  MOVLW  06
+003D:  MOVWF  77
+003E:  DECFSZ 77,F
+003F:  GOTO   03E
+0040:  NOP
+....................    output_low(TRIG1); 
+0041:  BCF    20.1
+0042:  MOVF   20,W
+0043:  BSF    03.5
+0044:  MOVWF  07
+0045:  BCF    03.5
+0046:  BCF    07.1
+....................    while(!input(ECHO1))  {} 
+0047:  BSF    20.0
+0048:  MOVF   20,W
+0049:  BSF    03.5
+004A:  MOVWF  07
+004B:  BCF    03.5
+004C:  BTFSS  07.0
+004D:  GOTO   047
+....................    set_timer1(0);                         
+004E:  CLRF   0F
+004F:  CLRF   0E
+....................    while(input(ECHO1))   { 
+0050:  BSF    20.0
+0051:  MOVF   20,W
+0052:  BSF    03.5
+0053:  MOVWF  07
+0054:  BCF    03.5
+0055:  BTFSS  07.0
+0056:  GOTO   076
+....................       time=get_timer1();   
+0057:  MOVF   0F,W
+0058:  MOVWF  7A
+0059:  MOVF   0E,W
+005A:  MOVWF  77
+005B:  MOVF   0F,W
+005C:  SUBWF  7A,W
+005D:  BTFSS  03.2
+005E:  GOTO   057
+005F:  MOVF   77,W
+0060:  MOVWF  27
+0061:  MOVF   7A,W
+0062:  MOVWF  28
+....................       if(time > 3000){ 
+0063:  MOVF   28,W
+0064:  SUBLW  0A
+0065:  BTFSC  03.0
+0066:  GOTO   075
+0067:  XORLW  FF
+0068:  BTFSS  03.2
+0069:  GOTO   06E
+006A:  MOVF   27,W
+006B:  SUBLW  B8
+006C:  BTFSC  03.0
+006D:  GOTO   075
+....................          time = 3000; 
+006E:  MOVLW  0B
+006F:  MOVWF  28
+0070:  MOVLW  B8
+0071:  MOVWF  27
+....................          set_timer1(0);  
+0072:  CLRF   0F
+0073:  CLRF   0E
+....................          break; 
+0074:  GOTO   076
+....................       } 
+....................    } 
+0075:  GOTO   050
+....................    set_timer1(0);   
+0076:  CLRF   0F
+0077:  CLRF   0E
+....................    return time; 
+0078:  MOVF   27,W
+0079:  MOVWF  78
+007A:  MOVF   28,W
+007B:  MOVWF  79
+.................... } 
+007C:  BCF    0A.3
+007D:  BCF    0A.4
+007E:  GOTO   30A (RETURN)
+....................  
+.................... float calcular_distancia(unsigned int16 tiempo){ 
+....................    float distancia; 
+....................    distancia = tiempo * 0.136 * 1.05; 
+*
+00F4:  MOVF   28,W
+00F5:  MOVWF  2E
+00F6:  MOVF   27,W
+00F7:  MOVWF  2D
+*
+0114:  MOVF   7A,W
+0115:  MOVWF  39
+0116:  MOVF   79,W
+0117:  MOVWF  38
+0118:  MOVF   78,W
+0119:  MOVWF  37
+011A:  MOVF   77,W
+011B:  MOVWF  36
+011C:  MOVLW  96
+011D:  MOVWF  3D
+011E:  MOVLW  43
+011F:  MOVWF  3C
+0120:  MOVLW  0B
+0121:  MOVWF  3B
+0122:  MOVLW  7C
+0123:  MOVWF  3A
+0124:  CALL   07F
+0125:  MOVF   77,W
+0126:  MOVWF  2D
+0127:  MOVF   78,W
+0128:  MOVWF  2E
+0129:  MOVF   79,W
+012A:  MOVWF  2F
+012B:  MOVF   7A,W
+012C:  MOVWF  30
+012D:  MOVWF  39
+012E:  MOVF   79,W
+012F:  MOVWF  38
+0130:  MOVF   78,W
+0131:  MOVWF  37
+0132:  MOVF   77,W
+0133:  MOVWF  36
+0134:  MOVLW  66
+0135:  MOVWF  3D
+0136:  MOVWF  3C
+0137:  MOVLW  06
+0138:  MOVWF  3B
+0139:  MOVLW  7F
+013A:  MOVWF  3A
+013B:  CALL   07F
+013C:  MOVF   7A,W
+013D:  MOVWF  2C
+013E:  MOVF   79,W
+013F:  MOVWF  2B
+0140:  MOVF   78,W
+0141:  MOVWF  2A
+0142:  MOVF   77,W
+0143:  MOVWF  29
+....................    return distancia; 
+0144:  MOVF   29,W
+0145:  MOVWF  77
+0146:  MOVF   2A,W
+0147:  MOVWF  78
+0148:  MOVF   2B,W
+0149:  MOVWF  79
+014A:  MOVF   2C,W
+014B:  MOVWF  7A
+....................  
+.................... } 
+014C:  BCF    0A.3
+014D:  BCF    0A.4
+014E:  GOTO   313 (RETURN)
+....................  
+....................  
+....................  
+....................  
+.................... void main(){ 
+*
+02F0:  CLRF   04
+02F1:  BCF    03.7
+02F2:  MOVLW  1F
+02F3:  ANDWF  03,F
+02F4:  MOVLW  19
+02F5:  BSF    03.5
+02F6:  MOVWF  19
+02F7:  MOVLW  A6
+02F8:  MOVWF  18
+02F9:  MOVLW  90
+02FA:  BCF    03.5
+02FB:  MOVWF  18
+02FC:  BSF    03.5
+02FD:  BSF    1F.0
+02FE:  BSF    1F.1
+02FF:  BSF    1F.2
+0300:  BCF    1F.3
+0301:  MOVLW  07
+0302:  MOVWF  1C
+....................  
+....................    unsigned int16 tiempo = 0; 
+*
+0306:  CLRF   21
+0307:  CLRF   22
+....................    float distancia; 
+....................     
+....................    init_ultrasonico(); 
+0308:  GOTO   026
+....................     
+....................    for(;;){ 
+....................       tiempo = read_time_ultrasonico(); 
+0309:  GOTO   036
+030A:  MOVF   79,W
+030B:  MOVWF  22
+030C:  MOVF   78,W
+030D:  MOVWF  21
+....................       distancia = calcular_distancia(tiempo); 
+030E:  MOVF   22,W
+030F:  MOVWF  28
+0310:  MOVF   21,W
+0311:  MOVWF  27
+0312:  GOTO   0F4
+0313:  MOVF   7A,W
+0314:  MOVWF  26
+0315:  MOVF   79,W
+0316:  MOVWF  25
+0317:  MOVF   78,W
+0318:  MOVWF  24
+0319:  MOVF   77,W
+031A:  MOVWF  23
+....................       printf("tiempo = %Lu - distancia: %f\n",tiempo,distancia); 
+031B:  CLRF   27
+031C:  MOVF   27,W
+031D:  CALL   004
+031E:  INCF   27,F
+031F:  MOVWF  77
+0320:  MOVF   77,W
+0321:  BTFSS  0C.4
+0322:  GOTO   321
+0323:  MOVWF  19
+0324:  MOVLW  09
+0325:  SUBWF  27,W
+0326:  BTFSS  03.2
+0327:  GOTO   31C
+0328:  MOVLW  10
+0329:  MOVWF  04
+032A:  MOVF   22,W
+032B:  MOVWF  29
+032C:  MOVF   21,W
+032D:  MOVWF  28
+032E:  GOTO   14F
+032F:  MOVLW  0C
+0330:  MOVWF  28
+0331:  MOVF   28,W
+0332:  CALL   004
+0333:  INCF   28,F
+0334:  MOVWF  77
+0335:  MOVF   77,W
+0336:  BTFSS  0C.4
+0337:  GOTO   336
+0338:  MOVWF  19
+0339:  MOVLW  1A
+033A:  SUBWF  28,W
+033B:  BTFSS  03.2
+033C:  GOTO   331
+033D:  MOVLW  89
+033E:  MOVWF  04
+033F:  MOVF   26,W
+0340:  MOVWF  2C
+0341:  MOVF   25,W
+0342:  MOVWF  2B
+0343:  MOVF   24,W
+0344:  MOVWF  2A
+0345:  MOVF   23,W
+0346:  MOVWF  29
+0347:  MOVLW  02
+0348:  MOVWF  2D
+0349:  GOTO   1EC
+034A:  MOVLW  0A
+034B:  BTFSS  0C.4
+034C:  GOTO   34B
+034D:  MOVWF  19
+....................       delay_ms(300);     
+034E:  MOVLW  02
+034F:  MOVWF  27
+0350:  MOVLW  96
+0351:  MOVWF  28
+0352:  GOTO   2D9
+0353:  DECFSZ 27,F
+0354:  GOTO   350
+....................    } 
+0355:  GOTO   309
+.................... } 
+....................  
+....................  
+....................  
+....................  
+0356:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT NODEBUG NOPROTECT BROWNOUT NOLVP NOCPD NOWRT
